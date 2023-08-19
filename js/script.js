@@ -1,3 +1,5 @@
+
+let container = document.querySelector('#container')
 let x  = document.querySelector('.x');
 let o = document.querySelector('.o');
 let boxes = document.querySelectorAll('.box');
@@ -24,8 +26,19 @@ for (let index = 0; index < boxes.length; index++) {
       //computar jogada
       if(player1 == player2){
         player1++;
+
+        if(secondPlayer == 'ai-player'){
+             setTimeout(function(){
+              computerPlayer()},700);
+             
+          player2++;
+          
+          
+        }
+
       }else{
         player2++;
+       
       }
       //verifica o ganhador
       checkInCondition();
@@ -33,8 +46,25 @@ for (let index = 0; index < boxes.length; index++) {
     }
 
   });
+  
 
 }
+// evento para selecionar 2-players ou IA
+
+for(let i =0; i < buttons.length; i++){
+  buttons[i].addEventListener('click',function(){
+     secondPlayer = this.getAttribute('id');
+
+     for(let hideBtns = 0; hideBtns < buttons.length; hideBtns++){
+        buttons[hideBtns].style.display = 'none';
+     }
+
+     setTimeout(function(){
+      container.classList.remove('hide');
+    },500)
+  });
+}
+
 // add elementos no box
 function checkElements(player1,player2){
   if(player1 == player2){
@@ -254,6 +284,39 @@ for(let i = 0; i < boxesToRemove.length; i++){
 }
   
 
+}
+
+
+function computerPlayer(){
+   let clonarBola = o.cloneNode(true);
+   let counter = 0;
+   let filled = 0
+
+   for(let i = 0;i < boxes.length; i++){
+
+    let randomNumber = Math.floor(Math.random() * 6);
+    // preencher somente se estiver vazio o 'Child'
+       if(boxes[i].childNodes[0] == undefined){
+        
+        if(randomNumber <= 1){
+          boxes[i].appendChild(clonarBola);
+          counter++;
+          break;
+          
+        }else{ // checar quantas estão preechidas
+          filled++;
+
+        }
+
+       }
+
+       
+
+   }
+
+   if(counter == 0 && filled < 9){
+    computerPlayer();
+   }
 }
 
 
